@@ -1,0 +1,6 @@
+# directory
+.bundle
+vendor/bundle
+
+# file
+Gemfile.lock
