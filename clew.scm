@@ -1,0 +1,27 @@
+(use text.html-lite)
+(use text.tree)
+
+(define (json->html path repo jvalue)
+  (cond
+   ((string? jvalue) (values repo (format "str:~S" jvalue)))
+   ((number? jvalue) (values repo (format "num:~D" jvalue)))
+   ((symbol? jvalue) (values repo (symbol->string jvalue)))
+   ((list? jvalue)
+    (let loop ((pairs jvalue) (repo repo) (children '()))
+      (if (null? pairs)
+          (let ((page (apply html:ul (map (lambda (pair)
+                                            (html:li (car pair)
+                                                     ": "
+                                                     (cdr pair)))
+                                          children))))
+            (values path
+                    (cons (cons path page) repo)))
+          (let* ((key (caar pairs))
+                 (value (cdar pairs))
+                 (path (format "~S/~S" path key)))
+            (receive (repo elem) (json->html path repo value)
+              (loop (cdr pairs)
+                    (cons (cons path elem))
+            (loop (cdr pairs)
+                  (cons (cons (format "~S/~S" path key)
+                              (receive (repo ))))
