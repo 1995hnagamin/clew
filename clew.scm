@@ -1,7 +1,7 @@
 (use text.html-lite)
 (use text.tree)
 
-(define (json->html path repo jvalue)
+(define (json->pages path repo jvalue)
   (cond
    ((string? jvalue) (values repo (format "str:~S" jvalue)))
    ((number? jvalue) (values repo (format "num:~D" jvalue)))
