@@ -1,6 +1,9 @@
 (use text.html-lite)
 (use text.tree)
 
+(define (path->filepath path)
+  (string-join (reverse path) "__"))
+
 (define (json->pages path repo jvalue)
   (cond
    ((string? jvalue) (values repo (format "str:~S" jvalue)))
