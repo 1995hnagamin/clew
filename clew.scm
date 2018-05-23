@@ -1,3 +1,5 @@
+(use file.util)
+(use rfc.json)
 (use text.html-lite)
 (use text.tree)
 
@@ -29,3 +31,10 @@
                            (cons (cons key elem) children)))))))
    ((vector? jvalue)
     (values repo "array"))))
+
+(define (make-pages jvalue)
+  (receive (repo _) (json->pages repo jvalue)
+           (map (lambda (pair)
+                  (let ((path (path->filepath (car pair)))
+                        (page (cdr pair)))
+                    ())))))
