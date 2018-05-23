@@ -15,14 +15,15 @@
           (let ((page (apply html:ul (map (lambda (pair)
                                             (html:li (car pair)
                                                      ": "
-                                                     (cdr pair)))
+                                                     (html:a :href (path->filepath path)
+                                                                  "object")))
                                           children))))
             (values (cons (cons path page) repo)
                     path))
           (let* ((key (caar pairs))
                  (value (cdar pairs))
-                 (path (format "~S/~S" path key)))
-            (receive (repo elem) (json->html path repo value)
+                 (path (cons key path)))
+            (receive (repo elem) (json->pages path repo value)
                      (loop (cdr pairs)
                            repo
                            (cons (cons key elem) children)))))))
