@@ -14,14 +14,14 @@
                                                      ": "
                                                      (cdr pair)))
                                           children))))
-            (values path
-                    (cons (cons path page) repo)))
+            (values (cons (cons path page) repo)
+                    path))
           (let* ((key (caar pairs))
                  (value (cdar pairs))
                  (path (format "~S/~S" path key)))
             (receive (repo elem) (json->html path repo value)
-              (loop (cdr pairs)
-                    (cons (cons path elem))
-            (loop (cdr pairs)
-                  (cons (cons (format "~S/~S" path key)
-                              (receive (repo ))))
+                     (loop (cdr pairs)
+                           repo
+                           (cons (cons key elem) children)))))))
+   ((vector? jvalue)
+    (values repo "array"))))
