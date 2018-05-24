@@ -7,6 +7,9 @@
 (define (path->filepath path)
   (format "~A.html" (string-join (reverse path) "__")))
 
+(define (path->string path)
+  (string-join (reverse path) "/"))
+
 (define (json->pages path repo jvalue)
   (cond
    ((string? jvalue) (values repo (format "str:~S" jvalue)))
