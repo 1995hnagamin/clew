@@ -1,3 +1,5 @@
+#!/usr/bin/env gosh
+
 (use file.util)
 (use gauche.sequence)
 (use rfc.json)
@@ -59,3 +61,9 @@
                         (display (tree->string page) oport)
                         (display "\n" oport)))))
                 repo)))
+
+(define (main args)
+  (if (null? (cdr args))
+      (print "requires at least 1 argument")
+      (let ((filename (cadr args)))
+        (make-pages (with-input-from-file filename parse-json)))))
