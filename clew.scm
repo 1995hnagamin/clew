@@ -19,7 +19,7 @@
                                             (html:li (car pair)
                                                      ": "
                                                      (cdr pair)))
-                                          children))))
+                                          (reverse children)))))
             (values (cons (cons path page) repo)
                     (html:a :href (path->filepath path) "object")))
           (let* ((key (caar pairs))
