@@ -4,7 +4,7 @@
 (use text.tree)
 
 (define (path->filepath path)
-  (string-join (reverse path) "__"))
+  (format "~A.html" (string-join (reverse path) "__")))
 
 (define (json->pages path repo jvalue)
   (cond
