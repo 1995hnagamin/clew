@@ -33,8 +33,12 @@
     (values repo "array"))))
 
 (define (make-pages jvalue)
-  (receive (repo _) (json->pages repo jvalue)
+  (receive (repo _) (json->pages '("json") '() jvalue)
            (map (lambda (pair)
                   (let ((path (path->filepath (car pair)))
                         (page (cdr pair)))
-                    ())))))
+                    (call-with-output-file path
+                      (lambda (oport)
+                        (display (tree->string page) oport)
+                        (display "\n" oport)))))
+                repo)))
