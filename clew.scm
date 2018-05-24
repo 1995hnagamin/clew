@@ -17,11 +17,10 @@
           (let ((page (apply html:ul (map (lambda (pair)
                                             (html:li (car pair)
                                                      ": "
-                                                     (html:a :href (path->filepath (cons (car pair) path))
-                                                                  "object")))
+                                                     (cdr pair)))
                                           children))))
             (values (cons (cons path page) repo)
-                    path))
+                    (html:a :href (path->filepath path) "object")))
           (let* ((key (caar pairs))
                  (value (cdar pairs))
                  (path (cons key path)))
