@@ -17,7 +17,7 @@
           (let ((page (apply html:ul (map (lambda (pair)
                                             (html:li (car pair)
                                                      ": "
-                                                     (html:a :href (path->filepath path)
+                                                     (html:a :href (path->filepath (cons (car pair) path))
                                                                   "object")))
                                           children))))
             (values (cons (cons path page) repo)
