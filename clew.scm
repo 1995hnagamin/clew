@@ -1,4 +1,5 @@
 (use file.util)
+(use gauche.sequence)
 (use rfc.json)
 (use text.html-lite)
 (use text.tree)
@@ -29,7 +30,19 @@
                            repo
                            (cons (cons key elem) children)))))))
    ((vector? jvalue)
-    (values repo "array"))))
+    (let loop ((index 0) (elems (vector->list jvalue)) (repo repo) (children '()))
+      (if (null? elems)
+          (let ((page (apply html:ul (map-with-index (lambda (index elem)
+                                                       (html:li index ": " elem))
+                                                     (reverse children)))))
+            (values (cons (cons path page) repo)
+                    (html:a :href (path->filepath path) "array")))
+          (let ((elem (car elems)) (path (cons (number->string index) path)))
+            (receive (repo elem) (json->pages path repo elem)
+                     (loop (+ index 1)
+                           (cdr elems)
+                           repo
+                           (cons elem children)))))))))
 
 (define (make-pages jvalue)
   (receive (repo _) (json->pages '("json") '() jvalue)
