@@ -1,5 +1,5 @@
 <body>
-  <h2>Array: <%= path2string(path) %></h2>
+  <h2>Array: <%= path.to_s %></h2>
   <ul>
     <% elems.each_with_index do |elem, idx| %>
       <li><%= idx %>: <%= elem %></li>

@@ -1,5 +1,5 @@
 <body>
-  <h2>Object: <%= path2string(path) %></h2>
+  <h2>Object: <%= path.to_s %></h2>
   <ul>
     <% pairs.each do |key, elem| %>
       <li><%= key %>: <%= elem %></li>

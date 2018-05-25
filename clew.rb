@@ -33,6 +33,59 @@ def read_erb(filename)
   end
 end # read_erb
 
+class Worker
+  def initialize(outputdir)
+    @odir = outputdir
+    @repo = []
+
+    @hasherb = read_erb('hash.erb')
+    @linkerb = read_erb('link.erb')
+    @arrayerb = read_erb('array.erb')
+  end # Worker#initialize
+
+  def parse(jvalue, path)
+    case jvalue
+    when String
+      %Q{str("#{jvalue}")}
+    when Numeric
+      "num(#{jvalue})"
+    when NilClass
+      "null"
+    when TrueClass, FalseClass
+      jvalue.to_s
+    when Hash
+      pairs = []
+      jvalue.each do |key, value|
+        elem = parse(value, path.dig(key))
+        pairs << [key, elem]
+      end
+      page = @hasherb.result(binding)
+      @repo << [path, page]
+      content = "object"
+      @linkerb.result(binding)
+    when Array
+      elems = []
+      jvalue.each_with_index do |child, idx|
+        elem = parse(child, path.dig(idx.to_s))
+        elems << elem
+      end
+      page = @arrayerb.result(binding)
+      @repo << [path, page]
+      content = "array(#{jvalue.length})"
+      @linkerb.result(binding)
+    end
+  end # Worker#parse
+
+  def run(jvalue)
+    res = parse(jvalue, JPath.new(["json"]))
+    @repo.each do |path, page|
+      File.open(path.to_filepath(@odir), "w") do |f|
+        f.puts page
+      end
+    end
+  end # Worker#run
+end # class Worker
+
 def json2pages(outputdir, path, repo, jvalue)
   case jvalue
   when String
