@@ -15,7 +15,9 @@ def json2pages(outputdir, path, repo, jvalue)
     [repo, "str:#{jvalue}"]
   when Numeric
     [repo, "num:#{jvalue}"]
-  when NilClass, TrueClass, FalseClass
+  when NilClass
+    [repo, "null"]
+  when TrueClass, FalseClass
     [repo, jvalue.to_s]
   when Hash
     pairs = []
