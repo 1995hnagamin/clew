@@ -51,7 +51,7 @@ def json2pages(outputdir, path, repo, jvalue)
     linkerb = File.open('link.erb') do |f|
       ERB.new(f.read)
     end
-    content = "array"
+    content = "array(#{jvalue.length})"
     [repo, linkerb.result(binding)]
   end
 end
