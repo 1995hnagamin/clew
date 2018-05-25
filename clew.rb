@@ -9,6 +9,24 @@ def path2string(path)
   path.join("/")
 end
 
+class JPath
+  def initialize(array)
+    @path = array
+  end # JPath#initialize
+
+  def to_filepath(outputdir)
+    "#{outputdir}/#{@path.join('__')}.html"
+  end # JPath#to_filepath
+
+  def to_s()
+    @path.join("/")
+  end # JPath#to_s
+
+  def dig(name)
+    JPath.new(@path + [name])
+  end #JPath#dig
+end # class JPath
+
 def json2pages(outputdir, path, repo, jvalue)
   case jvalue
   when String
