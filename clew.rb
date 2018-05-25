@@ -19,6 +19,10 @@ class JPath
     @path[idx]
   end
 
+  def to_a()
+    @path
+  end
+
   def dig(name)
     JPath.new(@path + [name])
   end #JPath#dig

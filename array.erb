@@ -1,5 +1,13 @@
 <body>
-  <h2>Array: <%= path.to_s %></h2>
+  <h2>
+    <% path.to_a.each_with_index do |dir, idx| %>
+      <% if idx < path.to_a.length - 1 %>
+        <a href="./<%= "../"*(path.to_a.length - idx - 1)  %>index.html"><%= dir %></a>
+      <% else %>
+        <%= dir %>
+      <% end %>/
+    <% end %>
+  <h3>Array</h3>
   <ul>
     <% elems.each_with_index do |elem, idx| %>
       <li><%= idx %>: <%= elem %></li>
