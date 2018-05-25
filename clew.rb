@@ -27,6 +27,12 @@ class JPath
   end #JPath#dig
 end # class JPath
 
+def read_erb(filename)
+  File.open(filename) do |f|
+    ERB.new(f.read)
+  end
+end # read_erb
+
 def json2pages(outputdir, path, repo, jvalue)
   case jvalue
   when String
