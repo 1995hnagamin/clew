@@ -1,4 +1,5 @@
 require 'erb'
+require 'fileutils'
 require 'json'
 
 class JPath
@@ -7,12 +8,16 @@ class JPath
   end # JPath#initialize
 
   def to_filepath(outputdir)
-    "#{outputdir}/#{@path.join('__')}.html"
+    "#{outputdir}/#{@path.join('/')}/index.html"
   end # JPath#to_filepath
 
   def to_s()
     @path.join("/")
   end # JPath#to_s
+
+  def [](idx)
+    @path[idx]
+  end
 
   def dig(name)
     JPath.new(@path + [name])
@@ -53,6 +58,8 @@ class Worker
       end
       page = @hasherb.result(binding)
       @repo << [path, page]
+
+      href = "./#{path[-1]}/index.html"
       content = "object"
       @linkerb.result(binding)
     when Array
@@ -63,6 +70,8 @@ class Worker
       end
       page = @arrayerb.result(binding)
       @repo << [path, page]
+
+      href = "./#{path[-1]}/index.html"
       content = "array(#{jvalue.length})"
       @linkerb.result(binding)
     end
@@ -71,7 +80,9 @@ class Worker
   def run(jvalue)
     res = parse(jvalue, JPath.new(["json"]))
     @repo.each do |path, page|
-      File.open(path.to_filepath(@odir), "w") do |f|
+      filepath = path.to_filepath(@odir)
+      FileUtils.mkdir_p(File.dirname(filepath))
+      File.open(filepath, "w") do |f|
         f.puts page
       end
     end
