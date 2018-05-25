@@ -35,7 +35,22 @@ def json2pages(outputdir, path, repo, jvalue)
     content = "object"
     [repo, linkerb.result(binding)]
   when Array
-    [repo, "array"]
+    elems = []
+    jvalue.each_with_index do |child, idx|
+      newpath = path + [idx.to_s]
+      repo, elem = json2pages(outputdir, newpath, repo, child)
+      elems << elem
+    end
+    arrayerb = File.open('array.erb') do |f|
+      ERB.new(f.read)
+    end
+    page = arrayerb.result(binding)
+    repo << [path, page]
+    linkerb = File.open('link.erb') do |f|
+      ERB.new(f.read)
+    end
+    content = "array"
+    [repo, linkerb.result(binding)]
   end
 end
 
